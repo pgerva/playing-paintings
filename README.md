@@ -20,22 +20,22 @@ Notice that the path of the images directory can be relative or absolute.
  
 # Required packages
 
-os
-sys
-warnings
-csv
-numpy
-scipy
-pywt  (pip install PyWavelets)
-pywt.data
-librosa
-soundfile
-PIL (pip install Pillow)
-PySide2
-qtwidgets
-matplotlib
-
+os  
+sys  
+warnings  
+csv  
+numpy  
+scipy  
+pywt  (pip install PyWavelets)  
+pywt.data  
+librosa  
+soundfile  
+PIL (pip install Pillow)  
+PySide2  
+qtwidgets  
+matplotlib  
+  
 
 # References
 
-[1] P. Gervasio, A. Quarteroni, D. Cassani. "Let do paintngs play."  (2022)
+[1] P. Gervasio, A. Quarteroni, D. Cassani. "Let do paintings play."  (2022)
