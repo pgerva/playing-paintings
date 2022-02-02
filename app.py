@@ -965,9 +965,9 @@ class MainWindow(QtWidgets.QMainWindow):
 app = QtWidgets.QApplication(sys.argv)
 # directory where the audio-files are stored (absolute path,
 # it is needed for the reproduction of the sound)
-musics_dir = "/home/gerva/Morandini/Musiche/"
+musics_dir = "absolute_path_of_directory_of_musics"
 # directory where the image-files are stored  (absolute or relative path)
-paintings_dir = "../Immagini/"
+paintings_dir = "path_of_directory_of_images"
 warnings.filterwarnings('ignore')
 window = MainWindow(musics_dir, paintings_dir)
 window.show()
