@@ -678,7 +678,14 @@ class MainWindow(QtWidgets.QMainWindow):
         # read yhe image
         data = PIL.Image.open(self.paintings_dir + self.painting_name)
         # save the image intensity
-        image_intensity = np.asarray(data)[:, :, 0]
+        image = np.array(data, dtype=np.double)
+        image_intensity = image[:, :, 0]
+        if len(image.shape) == 3:
+            n_layers = image.shape[2]
+            for i in range(1, n_layers):
+                image_intensity = image_intensity + image[:, :, i]
+            image_intensity = image_intensity / n_layers
+
         n_pixels = image_intensity.size
         total_time = float(n_pixels)/self.sample_rate
         # compute the discrete transform of the image
@@ -965,9 +972,9 @@ class MainWindow(QtWidgets.QMainWindow):
 app = QtWidgets.QApplication(sys.argv)
 # directory where the audio-files are stored (absolute path,
 # it is needed for the reproduction of the sound)
-musics_dir = "absolute_path_of_directory_of_musics"
+musics_dir = "/home/gerva/Morandini/Musiche/"
 # directory where the image-files are stored  (absolute or relative path)
-paintings_dir = "path_of_directory_of_images"
+paintings_dir = "../Immagini/"
 warnings.filterwarnings('ignore')
 window = MainWindow(musics_dir, paintings_dir)
 window.show()
