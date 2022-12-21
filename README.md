@@ -23,11 +23,7 @@ supplied by you.**
 - Clone the github repository or download the zip file and uncompress it.
 - Install the following Python packages:
 
-  pip install os  
   pip install pathlib  
-  pip install sys  
-  pip install warnings  
-  pip install csv  
   pip install numpy  
   pip install scipy  
   pip install PyWavelets  
@@ -59,8 +55,8 @@ PlayingPaintings.py script:
 
    - The file *musics.csv* must contain the list of the .mp3 (or .wav) files
      of the musics that you want to consider for the analysis. These files must be present in the directory *musics_dir*.
-   - The file *paintings.csv* must contain the list of the .png files of the
-     paintings that you want to consider for the analysis. These files must be present in the directory *paintings_dir*. The first line of the file *paintings.csv* must not contain a filename, but any string.
+   - The file *paintings.csv* must contain the list of the .png files (without
+     extension) of the paintings that you want to consider for the analysis. These files must be present in the directory *paintings_dir*. The first line of the file *paintings.csv* must not contain a filename, but any string.
 
 <a name="run"></a>
 
