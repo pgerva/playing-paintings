@@ -41,6 +41,9 @@ supplied by you.**
 To run the app, a set of audio tracks (mp3 or wav) and a set of digital images
 (png) have to be available on your storage space (not necessarily in the same directory in which the app is).
 
+Each audio track is read from the realtive file jointly with its samplerate.
+
+
 
 - Modify the value of
 the variables *musics_dir* and *paintings_dir* at the lines 1241--1248 of the
