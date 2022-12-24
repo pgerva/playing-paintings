@@ -102,8 +102,6 @@ The size of your files is free, however, bear in mind that the larger the files,
 If the music tracks are too short compared with the size of the image, i.e., if
 the number of samples of the music track is smaller than the number of pixels of the image, then the music track will be padded by replicating the data.
 
-# Results 
-
 # Referencing
 
 If you write a paper using results obtained with the help of **<kbd>PlayingPaintings</kbd>**,
