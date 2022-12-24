@@ -1,8 +1,8 @@
 # Playing paintings
 
 **<kbd>PlayingPaintings</kbd>** is a Python app for the analysis of similarities between a
-digital image and a set of music tracks, by applying the least square approach described in [this](https://doi.org/10.48550/arXiv.2206.14142)
-reference.  
+digital image and a set of music tracks. To this aim, the least square approach described in [this](https://doi.org/10.48550/arXiv.2206.14142)
+reference has been applied.  
 For copyright reasons, **the digital images (.png) and the music tracks (.mp3
 or .wav) needed to run the app have to be
 supplied by you.**
@@ -10,11 +10,11 @@ supplied by you.**
 
 # Getting started
 
-- [download and install](#download)
-- [the data](#data)
-- [run the app](#run)
-- [generated files](#newfiles)
-- [warnings](#warnings)
+- [Download and install](#download)
+- [The data](#data)
+- [Run the app](#run)
+- [Generated files](#newfiles)
+- [Warnings](#warnings)
 
 <a name="download"></a>
 
@@ -23,16 +23,17 @@ supplied by you.**
 - Clone the github repository or download the zip file and uncompress it.
 - Install the following Python packages:
 
-  pip install pathlib  
-  pip install numpy  
-  pip install scipy  
-  pip install PyWavelets  
-  pip install librosa  
-  pip install soundfile  
-  pip install Pillow  
-  pip install PySide2  
-  pip install matplot  
-
+  pathlib  
+  numpy  
+  scipy  
+  PyWavelets  
+  librosa  
+  soundfile  
+  Pillow  
+  PySide2  
+  matplot  
+  
+  `pip install pathlib numpy scipy PyWavelets librosa soundfile Pillow PySide2 matplot`
 
 <a name="data"></a>
 
@@ -41,7 +42,7 @@ supplied by you.**
 To run the app, a set of audio tracks (mp3 or wav) and a set of digital images
 (png) have to be available on your storage space (not necessarily in the same directory in which the app is).
 
-Each audio track is read from the realtive file jointly with its samplerate.
+Audio tracks can have different samplerates.
 
 
 
@@ -53,19 +54,23 @@ PlayingPaintings.py script:
 
    - *paintings_dir* must contain the (absolute or relative) path of the directory in which your digital images are stored.
 
-- Modify the content of the files *musics.csv* and *paintings.csv* that are
-  present in the directory.
+- Modify the content of the files *musics.csv* and *paintings.csv* that you find in the same directory of the PlayingPaintings.py script.
 
    - The file *musics.csv* must contain the list of the .mp3 (or .wav) files
-     of the musics that you want to consider for the analysis. These files must be present in the directory *musics_dir*.
+     of the musics that you want to consider for the analysis. The filenames must be complete, with their extensions. The files you list in musics.csv must be stored in the directory *musics_dir*.
    - The file *paintings.csv* must contain the list of the .png files (without
-     extension) of the paintings that you want to consider for the analysis. These files must be present in the directory *paintings_dir*. The first line of the file *paintings.csv* must not contain a filename, but any string.
+     extension) of the paintings that you want to consider for the analysis. The files you list in paintings.csv must be stored in the directory *paintings_dir*. The first line of the file *paintings.csv* must not contain a filename, but any string you want.
 
 <a name="run"></a>
 
 #  Run the app
 
-When the app starts, select the input and run, more precisely:
+When the app starts, a graphical window is open:
+
+
+
+
+Then select the input and run, more precisely:
 
 - Step 1: select the painting from your list
 - Step 2: select up to 4 musical pieces from your list
