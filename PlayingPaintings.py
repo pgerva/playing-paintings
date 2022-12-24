@@ -91,12 +91,12 @@ class ScaledPixmap(QtGui.QPixmap):
 
 
 class MusicListWidget(QtWidgets.QListWidget):
-    # A Widget to read the list of musics
-    def __init__(self, musics_list_filename):
+    # A Widget to read the list of music tracks
+    def __init__(self, music_list_filename):
         super().__init__()
         self.setSelectionMode(QtWidgets.QListWidget.ExtendedSelection)
         self.resize(min(self.width(), 160), min(self.width(), 160))
-        with open(musics_list_filename, "r") as input_file:
+        with open(music_list_filename, "r") as input_file:
             menu_csv = list(csv.reader(input_file, delimiter="\n"))
         menu_csv1 = []
         for sublist in menu_csv:
@@ -292,17 +292,17 @@ class Legend(QtWidgets.QLabel):
         canvas.fill(QtCore.Qt.white)
         self.setPixmap(canvas)
 
-    def fill_legend(self, musics, colors):
+    def fill_legend(self, tracks, colors):
         painter = QtGui.QPainter(self.pixmap())
         pen = QtGui.QPen()
         pen.setWidth(8)
-        for k in range(len(musics)):
+        for k in range(len(tracks)):
             pen.setColor(QtGui.QColor(colors[k]))
             painter.setPen(pen)
             painter.drawPoint(30, 20+k*20)
             pen.setColor(QtGui.QColor('black'))
             painter.setPen(pen)
-            legend_text = musics[k]
+            legend_text = tracks[k]
             music_name = os.path.splitext(legend_text)
             music_name=music_name[0]
             music_name1=music_name.replace("-"," ")
@@ -329,12 +329,12 @@ class Distance(QtWidgets.QLabel):
         pen.setColor(QtGui.QColor('black'))
         painter.setPen(pen)
 
-        painter.drawText(60, 60,
+        painter.drawText(50, 60,
                          ("The normalized distance between"))
-        painter.drawText(60, 80,
+        painter.drawText(50, 80,
                          ("the spectrum of the painting and"))
-        painter.drawText(60, 100,
-                         ("the spectrum of the new music is"))
+        painter.drawText(50, 100,
+                         ("the spectrum of the new piece of music is"))
         painter.drawText(140, 140,
                          (str("{:.6f}".format(distance))))
         painter.end()
@@ -369,17 +369,17 @@ class PlayButton(QtWidgets.QPushButton):
 
 
 class MainWindow(QtWidgets.QMainWindow):
-    def __init__(self, musics_dir, musics_list_filename, paintings_dir, paintings_list_filename):
+    def __init__(self, music_dir, music_list_filename, paintings_dir, paintings_list_filename):
         super().__init__()
         self.setWindowTitle("Playing paintings")
         self.setGeometry(100, 100, 1300, 800)
 
         self.paintings_dir = paintings_dir
-        self.musics_dir = musics_dir
+        self.music_dir = music_dir
         self.paintings_list_filename = paintings_list_filename
-        self.musics_list_filename = musics_list_filename
-        self.selected_musics = list()
-        self.n_selected_musics = 0
+        self.music_list_filename = music_list_filename
+        self.selected_tracks = list()
+        self.n_selected_tracks = 0
         self.sample_rate = list()
         self.my_sample_rate = 44100
         self.painting_name = " "
@@ -387,7 +387,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.wave_nlevels = 8
         self.transform = 0
 
-        self.color_musics = ["#66b2ff","#3399ff", "#0066cc", "#003366"]
+        self.color_tracks = ["#66b2ff","#3399ff", "#0066cc", "#003366"]
         self.color_painting = ["#ff0000", "#ec7d0d"]
 
         self.counter_go = 0
@@ -437,7 +437,7 @@ class MainWindow(QtWidgets.QMainWindow):
         painting_menu = PaintingListComboBox(paintings_list_filename)
         left_widget_list.append(painting_menu)
 # create the object for the scaled image (empty image)
-        self.pixmap = ScaledPixmap(painting_name, self.musics_dir)
+        self.pixmap = ScaledPixmap(painting_name, self.music_dir)
         # send the signal to the slot self.load_image_gui to show the image in the gui
         painting_menu.currentTextChanged.connect(self.load_image_gui)
         self.selected_painting = painting_name
@@ -454,16 +454,16 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # 3. The label Step 2
 # Choice of the music tracks.
-        musics_label = QtWidgets.QLabel("Step 2. Choose up to 4 tracks")
-        left_widget_list.append(musics_label)
+        music_label = QtWidgets.QLabel("Step 2. Choose up to 4 tracks")
+        left_widget_list.append(music_label)
 
-        # 4. The menu of the musics
-        self.musics_list = MusicListWidget(musics_list_filename)
-        self.musics_list.itemSelectionChanged.connect(self.set_selected_musics)
+        # 4. The menu of the music tracks
+        self.music_list = MusicListWidget(music_list_filename)
+        self.music_list.itemSelectionChanged.connect(self.set_selected_music)
 # define the layout and store the widget
-        musics_layout = QtWidgets.QVBoxLayout()
-        self.musics_list.setLayout(musics_layout)
-        left_widget_list.append(self.musics_list)
+        music_layout = QtWidgets.QVBoxLayout()
+        self.music_list.setLayout(music_layout)
+        left_widget_list.append(self.music_list)
 
         # 5. QvBox with the list of discrete transforms
 # Choice of the discrete transform.
@@ -478,7 +478,7 @@ class MainWindow(QtWidgets.QMainWindow):
         label.setWordWrap(True)
         transforms_layout.addWidget(label)
         label_description = QtWidgets.QLabel(
-            "(the transform for the musics will be of the same type, always 1D)")
+            "(the 1D-transform for the music will be of the same type)")
         label_description.setFont(QtGui.QFont('Arial', 8))
         label_description.setFixedWidth(230)
         label_description.setWordWrap(True)
@@ -640,7 +640,7 @@ class MainWindow(QtWidgets.QMainWindow):
                               alignment=QtCore.Qt.AlignHCenter)
 
         # Column 1: signals
-        signals_title = QtWidgets.QLabel("Waveforms of the musics")
+        signals_title = QtWidgets.QLabel("Waveforms of the music tracks")
         plot_layout.addWidget(signals_title, 0, 1,
                                               alignment=QtCore.Qt.AlignHCenter)
         for k in range(4):
@@ -755,14 +755,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.painting_name = selected_painting
         # print("selected painting", self.painting_name)
 
-    def set_selected_musics(self):
-        # save the list of selected musics in selected_musics
-        # print("selected musics")
-        # print([item.text() for item in self.musics_list.selectedItems()])
-        selected_musics_list = list()
-        for item in self.musics_list.selectedItems():
-            selected_musics_list.append(item.text())
-        self.save_selected_musics(selected_musics_list)
+    def set_selected_music(self):
+        # save the list of selected tracks in selected_tracks
+        # print("selected tracks")
+        # print([item.text() for item in self.music_list.selectedItems()])
+        selected_tracks_list = list()
+        for item in self.music_list.selectedItems():
+            selected_tracks_list.append(item.text())
+        self.save_selected_tracks(selected_tracks_list)
         self.counter_go += 1
         if self.counter_go >= 21 and not self.clearbutton.isEnabled():
             self.gobutton.setEnabled(True)
@@ -770,15 +770,15 @@ class MainWindow(QtWidgets.QMainWindow):
                                         'QPushButton::pressed {background-color: #FF8800; color: white;}')
 
 
-    def save_selected_musics(self, selected_musics):
-        n_musics = len(selected_musics)
-        if n_musics > 4:
-            selected_musics = selected_musics[0:4]
-            n_musics = 4
-        self.selected_musics = selected_musics
-        self.n_selected_musics = n_musics  # number of selected musics
-        # print("number of selected musics", self.n_selected_musics)
-        # print("save_selected_musics: selected musics", self.selected_musics)
+    def save_selected_tracks(self, selected_tracks):
+        n_tracks = len(selected_tracks)
+        if n_tracks > 4:
+            selected_tracks = selected_tracks[0:4]
+            n_tracks = 4
+        self.selected_tracks = selected_tracks
+        self.n_selected_tracks = n_tracks  # number of selected tracks
+        # print("number of selected tracks", self.n_selected_tracks)
+        # print("save_selected_tracks: selected tracks", self.selected_tracks)
 
     def set_selected_transform(self):
         self.set_transform(self.transform_widget.checkedId())
@@ -851,20 +851,20 @@ class MainWindow(QtWidgets.QMainWindow):
     def numeric_elaboration(self):
 
         # fill the legend
-        self.legend_widget.fill_legend(self.selected_musics, self.color_musics)
+        self.legend_widget.fill_legend(self.selected_tracks, self.color_tracks)
 
         # read and transform the image
         self.image_elaboration()
 
         # read the audio signals, plot and transform
         ma = []
-        for item_index, item in enumerate(self.selected_musics):
+        for item_index, item in enumerate(self.selected_tracks):
             # extract the name of the music
             music_name = os.path.splitext(item)
             music_name=music_name[0]
             music_name1=music_name.replace("-"," ")
             # read
-            audio_signal, sample_rate = librosa.load(self.musics_dir + item,
+            audio_signal, sample_rate = librosa.load(self.music_dir + item,
                                                     sr=None, mono=False)
             self.sample_rate.append(sample_rate)
 
@@ -897,7 +897,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.signal_widget_list[item_index].my_plot(audio_signal,
                                                     self.sample_rate[item_index],
                                                     music_name1,
-                                                    self.color_musics[item_index])
+                                                    self.color_tracks[item_index])
             self.signal_widget_list[item_index].draw()
 
             # print("audio_signal.shape", audio_signal.shape, "len_data", len_data)
@@ -912,10 +912,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
             if self.transform <= 1:
                 self.dt_widget_list[item_index].my_plot_dwt(coeffs_audio, music_name1,
-                                                        self.color_musics[item_index])
+                                                        self.color_tracks[item_index])
             else:
                 self.dt_widget_list[item_index].my_plot_dft(coeffs_audio, music_name1,
-                                                        self.color_musics[item_index],
+                                                        self.color_tracks[item_index],
                                                         self.sample_rate[item_index])
             self.dt_widget_list[item_index].draw()
 
@@ -944,7 +944,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # solve the least square problem
         nmatrix = np.sum(len_coeffs_audio)
 
-        matrix = np.zeros([nmatrix, self.n_selected_musics], dtype=complex)
+        matrix = np.zeros([nmatrix, self.n_selected_tracks], dtype=complex)
         for matrix_column, item in enumerate(ma):
             matrix[:, matrix_column] = np.array(item, dtype=complex)
             # matrix_column += 1
@@ -973,11 +973,11 @@ class MainWindow(QtWidgets.QMainWindow):
         coeffs_projection_real = coeffs_projection.real
         if self.transform <= 1:
             self.dt_widget_list[5].my_plot_dwt(coeffs_projection_real,
-                                               "new music",
+                                               "new piece of music",
                                                self.color_painting[1])
         else:
             self.dt_widget_list[5].my_plot_dft(coeffs_projection_real,
-                                               "new music",
+                                               "new piece of music",
                                                self.color_painting[1],
                                                self.my_sample_rate)
         self.dt_widget_list[5].draw()
@@ -987,14 +987,14 @@ class MainWindow(QtWidgets.QMainWindow):
                                                         len_coeffs_audio)
         # plot the signal of the image
         self.signal_widget_list[5].my_plot(painting_signal, self.my_sample_rate,
-                                           "new music",
+                                           "new piece of music",
                                            self.color_painting[1])
         self.signal_widget_list[5].draw()
 
-        # save the trace of the new music
+        # save the trace of the new piece of music
         soundfile.write("sound1.wav", painting_signal, self.my_sample_rate, format='WAV')
 
-        # connect the new music to its play button
+        # connect the new piece of music to its play button
         self.player_painting = Player(CURRENT_DIR, "sound1.wav")
         self.playbutton_painting.setEnabled(True)
         self.playbutton_painting.clicked.connect(lambda: self.click_playbutton(
@@ -1004,32 +1004,32 @@ class MainWindow(QtWidgets.QMainWindow):
             self.player_painting))
 
         # connect the music track to its play button
-        if self.n_selected_musics >0:
-            self.player_music0 = Player(self.musics_dir, self.selected_musics[0])
+        if self.n_selected_tracks >0:
+            self.player_music0 = Player(self.music_dir, self.selected_tracks[0])
             self.playbutton_music0.setEnabled(True)
             self.playbutton_music0.clicked.connect(
                 lambda: self.click_playbutton(self.player_music0))
             self.pausebutton_music0.setEnabled(True)
             self.pausebutton_music0.clicked.connect(lambda: self.click_pausebutton(
                 self.player_music0))
-        if self.n_selected_musics > 1:
-            self.player_music1 = Player(self.musics_dir, self.selected_musics[1])
+        if self.n_selected_tracks > 1:
+            self.player_music1 = Player(self.music_dir, self.selected_tracks[1])
             self.playbutton_music1.setEnabled(True)
             self.playbutton_music1.clicked.connect(
                 lambda: self.click_playbutton(self.player_music1))
             self.pausebutton_music1.setEnabled(True)
             self.pausebutton_music1.clicked.connect(lambda: self.click_pausebutton(
                 self.player_music1))
-        if self.n_selected_musics > 2:
-            self.player_music2 = Player(self.musics_dir, self.selected_musics[2])
+        if self.n_selected_tracks > 2:
+            self.player_music2 = Player(self.music_dir, self.selected_tracks[2])
             self.playbutton_music2.setEnabled(True)
             self.playbutton_music2.clicked.connect(
                 lambda: self.click_playbutton(self.player_music2))
             self.pausebutton_music2.setEnabled(True)
             self.pausebutton_music2.clicked.connect(lambda: self.click_pausebutton(
                 self.player_music2))
-        if self.n_selected_musics > 3:
-            self.player_music3 = Player(self.musics_dir, self.selected_musics[3])
+        if self.n_selected_tracks > 3:
+            self.player_music3 = Player(self.music_dir, self.selected_tracks[3])
             self.playbutton_music3.setEnabled(True)
             self.playbutton_music3.clicked.connect(
                 lambda: self.click_playbutton(self.player_music3))
@@ -1041,7 +1041,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # plot the piechart
         self.alpha = abs(self.alpha)
         self.alpha_percento =self.alpha/np.sum(self.alpha)
-        self.pie_widget.fill_pie(self.alpha_percento, self.selected_musics, self.color_musics)
+        self.pie_widget.fill_pie(self.alpha_percento, self.selected_tracks, self.color_tracks)
 
         # compute the distance between the normalized spectrum of the image and
         #  normalized spectrum of the projection
@@ -1060,7 +1060,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.clearbutton.setStyleSheet('QPushButton {background-color: #0066CC; color: white;}'
                                         'QPushButton::pressed {background-color: #FF8800; color: white;}')
 
-        self.helpgobutton.setText("Click on the play buttons to listen to the musics.")
+        self.helpgobutton.setText("Click on the play buttons to listen to the sounds.")
         self.helpclearbutton.show()
 
 
@@ -1237,9 +1237,9 @@ def generate_small_images(paintings_dir, paintings_list_filename):
 
 app = QtWidgets.QApplication(sys.argv)
 # directory where the audio-files are stored (absolute path)
-musics_dir = "/home/gerva/Musics/"
-# csv file with the list of mp3 files for the musics
-musics_list_filename = "musics.csv"
+music_dir = "/home/gerva/Musics/"
+# csv file with the list of mp3 files of the music tracks
+music_list_filename = "musictracks.csv"
 # directory where the images are stored  (absolute or relative path)
 paintings_dir = "../Paintings/"
 # csv file with the list of images (without extension).
@@ -1250,7 +1250,7 @@ paintings_list_filename = "paintings.csv"
 generate_small_images(paintings_dir, paintings_list_filename)
 
 warnings.filterwarnings('ignore')
-window = MainWindow(musics_dir, musics_list_filename,
+window = MainWindow(music_dir, music_list_filename,
                     paintings_dir, paintings_list_filename)
 window.show()
 app.exec_()
