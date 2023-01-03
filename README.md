@@ -42,7 +42,7 @@ To run the app, a set of audio tracks (mp3 or wav) and a set of digital images (
 
 
 - Modify the value of
-the variables *music_dir* and *paintings_dir* at the lines 1240-1247 of the
+the variables *music_dir* and *paintings_dir* at the lines 1246-1250 of the
 PlayingPaintings.py script:
 
    - *music_dir* must contain the (absolute) path of the directory where
@@ -86,7 +86,7 @@ at least one input.
 
 #  Generated files
 
-The directory *./_small* will be created by the app to store small (256x256)
+The directory *./_small* will be created by the app to store small (200x200)
 reproductions of your images to display in the app panel. The original images
 will be used by the numerical algorithm to perform the analysis and provide the
 new piece of music.

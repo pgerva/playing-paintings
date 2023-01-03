@@ -80,8 +80,8 @@ class ScaledPixmap(QtGui.QPixmap):
 
     def scale(self):
         # method to scale the pixmap
-        pw = min(self.width(), 200)  # minimum width of the image
-        ph = min(self.height(), 200)  # minimum height of the image
+        pw = self.width()  # minimum width of the image
+        ph = self.height()  # minimum height of the image
         # the scaled image has to be saved in a new variable
         # print("pw=",pw, " ph=",ph)
         scaled_pixmap = " "
@@ -1231,7 +1231,13 @@ def generate_small_images(paintings_dir, paintings_list_filename):
     for img in menu_csv1[1:]:
         if not exists(img+"_small.png"):
             im1 = Image.open(paintings_dir + img + ".png")
-            im1 = im1.resize((256, 256), Image.ANTIALIAS)
+            if im1.height >= im1.width:
+                new_h = 200
+                new_w = int(im1.width *200/im1.height)
+            else:
+                new_w = 200
+                new_h = int(im1.height * 200 / im1.width)
+            im1 = im1.resize((new_w, new_h), Image.ANTIALIAS)
             im1.save(paintings_dir_small + img + "_small.png", optimize = True, quality = 95)
 
 
