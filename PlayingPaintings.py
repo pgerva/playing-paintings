@@ -1237,7 +1237,7 @@ def generate_small_images(paintings_dir, paintings_list_filename):
 
 app = QtWidgets.QApplication(sys.argv)
 # directory where the audio-files are stored (absolute path)
-music_dir = "/home/gerva/Musics/"
+music_dir = "/home/gerva/Music/"
 # csv file with the list of mp3 files of the music tracks
 music_list_filename = "musictracks.csv"
 # directory where the images are stored  (absolute or relative path)
