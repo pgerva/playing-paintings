@@ -42,7 +42,7 @@ To run the app, a set of audio tracks (mp3 or wav) and a set of digital images (
 
 
 - Modify the value of
-the variables *music_dir* and *paintings_dir* at the lines 1241--1248 of the
+the variables *music_dir* and *paintings_dir* at the lines 1240-1247 of the
 PlayingPaintings.py script:
 
    - *music_dir* must contain the (absolute) path of the directory where
